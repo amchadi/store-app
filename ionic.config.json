@@ -1,0 +1,7 @@
+{
+  "name": "boutique-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
