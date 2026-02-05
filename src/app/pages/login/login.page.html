@@ -1,0 +1,91 @@
+<ion-content class="ion-padding login-content">
+
+  <!-- Brand -->
+  <div class="brand">
+    <div class="brand-badge">
+      <ion-icon [icon]="lockClosed"></ion-icon>
+    </div>
+    <h1>Bienvenue</h1>
+    <p>Connecte-toi pour accéder à ton espace</p>
+  </div>
+
+  <ion-card class="login-card">
+    <ion-card-content>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <!-- Email -->
+        <div class="field">
+          <label class="label">Email</label>
+          <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('email')">
+            <ion-icon [icon]="mailOutline" slot="start"></ion-icon>
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="ex: adnane@gmail.com"
+              autocomplete="email">
+            </ion-input>
+          </ion-item>
+          <p class="error" *ngIf="isInvalid('email')">Email obligatoire (format صحيح).</p>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label class="label">Mot de passe</label>
+          <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('password')">
+            <ion-icon [icon]="keyOutline" slot="start"></ion-icon>
+
+            <ion-input
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="current-password">
+            </ion-input>
+
+            <ion-button
+              type="button"
+              fill="clear"
+              slot="end"
+              class="eye-btn"
+              (click)="showPassword = !showPassword"
+              aria-label="Afficher / masquer le mot de passe">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <div class="helper-row">
+            <ion-button type="button" fill="clear" size="small" (click)="forgotPassword()">
+              Mot de passe oublié ?
+            </ion-button>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <ion-button
+          expand="block"
+          class="primary-btn"
+          type="submit"
+          [disabled]="loading">
+          <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
+          <span *ngIf="!loading">Se connecter</span>
+        </ion-button>
+
+        <div class="divider"><span>ou</span></div>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          class="secondary-btn"
+          type="button"
+          (click)="goToRegister()">
+          Créer un compte
+        </ion-button>
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+
+  <p class="bottom-hint">© 2026 · Gestion Stock</p>
+
+</ion-content>

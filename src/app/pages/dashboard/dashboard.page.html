@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Tableau de bord</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- ===== CARTE RÉSUMÉ ===== -->
+  <ion-card class="dash-card">
+    <ion-card-header>
+      <ion-card-title>Résumé</ion-card-title>
+      <ion-card-subtitle>Aujourd’hui et mois en cours</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <div class="row-line">
+        <div class="row-left">
+          <ion-icon [icon]="todayIcon"></ion-icon>
+          <span>Chiffre d’affaires aujourd’hui</span>
+        </div>
+        <strong>{{ todayTotal }} dh</strong>
+      </div>
+
+      <div class="row-line">
+        <div class="row-left">
+          <ion-icon [icon]="calendarIcon"></ion-icon>
+          <span>Total du mois en cours</span>
+        </div>
+        <strong>{{ currentMonthTotal }} dh</strong>
+      </div>
+
+      <div class="row-line">
+        <div class="row-left">
+          <ion-icon [icon]="trendingUpOutline"></ion-icon>
+          <span>Moyenne par jour</span>
+        </div>
+        <strong>{{ currentMonthAvg }} dh</strong>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- ===== CARTES PAR MOIS ===== -->
+  <ion-card class="dash-card" *ngFor="let m of months">
+    <ion-card-header>
+      <ion-card-title>{{ m.label }} {{ year }}</ion-card-title>
+      <ion-card-subtitle>Statistiques mensuelles</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <div class="row-line">
+        <div class="row-left">
+          <ion-icon [icon]="cash"></ion-icon>
+          <span>Total du mois</span>
+        </div>
+        <strong>{{ m.total }} dh</strong>
+      </div>
+
+  
+
+      <div class="row-line">
+        <div class="row-left">
+          <ion-icon name="stats-chart-outline"></ion-icon>
+          <span>Moyenne par jour</span>
+        </div>
+        <strong>{{ m.avgPerDay }} dh</strong>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

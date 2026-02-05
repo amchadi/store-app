@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mes paniers</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="btn-add" (click)="createBasket()">
+        <ion-icon [icon]="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Empty state -->
+  <ion-card class="empty-card" *ngIf="baskets.length === 0">
+    <ion-card-content>
+      <h2>Aucun panier</h2>
+      <p>Crée ton premier panier pour commencer.</p>
+
+      <ion-button expand="block" class="btn-primary" (click)="createBasket()">
+        Créer un panier
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- List -->
+  <ion-card class="basket-card" *ngFor="let b of baskets" (click)="openBasket(b.id)">
+    <ion-card-content class="basket-content">
+      <div class="basket-text">
+        <h2>{{ b.title }}</h2>
+        <p>{{ b.date }} · {{ b.itemsCount }} articles</p>
+      </div>
+
+      <div class="basket-right">
+        <div class="basket-total">{{ b.total }} DH</div>
+        <ion-icon name="chevron-forward-outline" class="chev"></ion-icon>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

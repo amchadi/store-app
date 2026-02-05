@@ -1,0 +1,132 @@
+ion-content {
+  --background: #f6f8fb;
+}
+
+/* ===== PRODUCT CARD (scoped) ===== */
+.product-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #eef1f6;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+/* ===== CARD HEADER (scoped) ===== */
+.product-card ion-card-header {
+  padding: 12px 16px 6px;
+}
+
+.product-card ion-card-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.product-card ion-card-subtitle {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ===== CARD CONTENT (scoped) ===== */
+.product-card ion-card-content {
+  padding: 0 16px 14px;
+}
+
+/* ===== INFO ROW (scoped) ===== */
+.product-card .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef1f6;
+  font-size: 13px;
+}
+
+.product-card .info-row:last-child {
+  border-bottom: none;
+}
+
+.product-card .info-row span {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.product-card .info-row strong {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+/* ===== BADGE (scoped) ===== */
+.product-card ion-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 10px;
+}
+
+/* ===== ACTION BUTTONS (scoped) ===== */
+.product-card .actions {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-card .actions ion-button {
+  height: 44px;
+  font-size: 14px;
+  font-weight: 800;
+  --border-radius: 14px;
+  --box-shadow: none;
+}
+
+/* Vente (success) */
+.product-card .actions ion-button[color="success"] {
+  --background: #22c55e;
+  --background-hover: #16a34a;
+}
+
+/* Augmenter stock (outline) */
+.product-card .actions ion-button[fill="outline"] {
+  --color: #2563eb;
+  --border-color: #2563eb;
+}
+
+/* =========================
+   HEADER / TOOLBAR (BLACK)
+========================= */
+ion-header,
+ion-toolbar {
+  --background: #000000;
+  --border-color: transparent;
+}
+
+ion-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+ion-back-button,
+ion-toolbar ion-icon,
+ion-buttons ion-button {
+  --color: #ffffff;
+}
+
+/* remove Ionic shadow line */
+ion-header::after {
+  display: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 380px) {
+  .product-card ion-card-title {
+    font-size: 13px;
+  }
+
+  .product-card .info-row {
+    font-size: 12px;
+  }
+}

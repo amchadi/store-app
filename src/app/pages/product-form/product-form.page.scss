@@ -1,0 +1,148 @@
+/* Background بحال app */
+.addp-content {
+  --background: #f6f8fb;
+}
+
+/* Header black */
+ion-header,
+ion-toolbar {
+  --background: #000000;
+  --border-color: transparent;
+}
+
+ion-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+ion-toolbar ion-icon,
+ion-buttons ion-button {
+  --color: #ffffff;
+}
+
+ion-header::after {
+  display: none;
+}
+
+/* Card */
+.addp-card {
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  margin: 12px 0;
+}
+
+/* Header inside card */
+.addp-head {
+  margin-bottom: 14px;
+}
+
+.addp-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #0b1220;
+}
+
+.addp-subtitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Fields */
+.addp-field {
+  margin-bottom: 12px;
+}
+
+.addp-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 900;
+  color: #0b1220;
+  margin-bottom: 6px;
+}
+
+/* Input item style (like your basket inputs) */
+.addp-item {
+  --background: #f7f8fb;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 14px;
+  padding-inline: 10px;
+}
+
+ion-input {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.addp-error {
+  margin-top: 6px;
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #dc2626;
+}
+
+.has-error {
+  border: 1px solid rgba(220, 38, 38, 0.35);
+}
+
+/* Row 2 columns */
+.addp-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.addp-col {
+  flex: 1;
+}
+
+/* Margin hint small line (like totals) */
+.addp-hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,.06);
+  margin: 10px 0 6px;
+
+  span {
+    font-size: 12px;
+    font-weight: 800;
+    color: #64748b;
+  }
+
+  strong {
+    font-size: 13px;
+    font-weight: 900;
+    color: #0b1220;
+  }
+}
+
+/* Buttons row like your "AJOUTER" button */
+.addp-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn-cancel {
+  flex: 1;
+  --border-radius: 14px;
+  font-weight: 900;
+  text-transform: none;
+}
+
+.btn-primary {
+  flex: 1;
+  --border-radius: 14px;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  --box-shadow: 0 10px 18px rgba(37, 99, 235, 0.25);
+}

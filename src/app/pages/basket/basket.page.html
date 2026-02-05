@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Panier</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  
+
+  <!-- ===== CARD PRODUIT ===== -->
+  <ion-card class="cart-item"     *ngFor="let p of products">
+<
+    <div class="item-header item-header-flex">
+      <div>
+        <h2 class="product-name">{{p.product.name}}</h2>
+        <p class="product-sub">Achat: {{p.product.purchase_price}} dh · Vente conseillée: {{p.product.sale_price}} dh</p>
+      </div>
+
+      <!-- DELETE BUTTON -->
+      <ion-button fill="clear" size="small" class="btn-delete" (click)="deleteItem()">
+        <ion-icon [icon]="trash" style="font-size: 26px;"></ion-icon>
+      </ion-button>
+    </div>
+
+    <ion-card-content class="row">
+
+      <div class="controls-50">
+
+        <!-- Prix -->
+        <ion-item lines="none" class="price-item half">
+          <ion-input type="number" label="Prix" labelPlacement="stacked" [value]="p.price"
+            (ionInput)="onPriceChange($event)">
+          </ion-input>
+        </ion-item>
+
+        <!-- Quantité (- / +) -->
+        <div class="qty half">
+          <ion-button fill="clear" class="qty-btn" (click)="decreaseQty(p)">
+            <ion-icon [icon]="down" style="font-size: 22px;"></ion-icon>
+          </ion-button>
+
+          <span class="qty-value">{{ p.quantity }}</span>
+
+          <ion-button fill="clear" class="qty-btn" (click)="increaseQty(p)">
+            <ion-icon [icon]="up" style="font-size: 22px;"></ion-icon>
+          </ion-button>
+        </div>
+
+      </div>
+
+    </ion-card-content>
+
+    <div class="item-total">
+      <span>Total article</span>
+      <strong>{{ p.price*p.quantity }} dh</strong>
+    </div>
+
+  </ion-card>
+  <!-- ===== CARD INFOS (50/50) ===== -->
+  <ion-card class="cart-item">
+    <div class="item-header">
+      <h2 class="section-title">Résumé de vente</h2>
+      <p class="section-subtitle">Indicateurs rapides</p>
+    </div>
+
+    <ion-card-content class="row">
+
+      <div class="info-grid">
+
+        <!-- Capitale de vente -->
+        <div class="info-card">
+          <div class="info-top">
+            <div class="info-icon">
+              <ion-icon [icon]="cash"></ion-icon>
+            </div>
+            <div class="info-text">
+              <p class="info-label">Capital d’achat</p>
+              <h3 class="info-value">{{calculatePurchaseCapital()}} dh</h3>
+            </div>
+          </div>
+          <p class="info-hint">Coût total des produits achetés</p>
+        </div>
+
+        <!-- Prix de vente idéal -->
+        <div class="info-card">
+          <div class="info-top">
+            <div class="info-icon">
+              <ion-icon [icon]="trendingUp"></ion-icon>
+            </div>
+            <div class="info-text">
+              <p class="info-label">Prix de vente idéal</p>
+              <h3 class="info-value">{{calculateSalesCapital()}} dh</h3>
+            </div>
+          </div>
+          <p class="info-hint">Recommandé pour maximiser le bénéfice</p>
+        </div>
+
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+  <!-- ===== DATE ACHAT ===== -->
+  <ion-item lines="none" class="date-row">
+
+
+    <ion-datetime-button datetime="achatDate"></ion-datetime-button>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="achatDate" presentation="date" locale="fr-FR">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+
+
+  <!-- ===== RÉSUMÉ ===== -->
+  <ion-card class="summary">
+    <ion-card-content>
+      <div class="summary-row">
+        <span>Total</span>
+        <strong>{{ total }} dh</strong>
+      </div>
+
+      <ion-button expand="block" class="btn-primary">
+        Valider le panier
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

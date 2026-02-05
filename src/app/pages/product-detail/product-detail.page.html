@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/produits"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détail produit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- ===================== CARD 1: INFOS PRODUIT ===================== -->
+  <ion-card class="product-card">
+    <ion-card-header>
+      <ion-card-title>{{ product.name }}</ion-card-title>
+      <ion-card-subtitle>{{ product.description }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <div class="info-row">
+        <span>Statut</span>
+        <ion-badge [color]="product.statusColor">
+          {{ product.status }}
+        </ion-badge>
+      </div>
+
+      <div class="info-row">
+        <span>Stock</span>
+        <strong>{{ product.stock }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Prix achat</span>
+        <strong>{{ product.buyPrice }} dh</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Prix vente</span>
+        <strong>{{ product.sellPrice }} dh</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Marge</span>
+        <strong>{{ profit }} dh</strong>
+      </div>
+
+      <!-- Buttons داخل نفس card -->
+      <div class="actions">
+        <ion-button
+          color="success"
+          expand="block"
+          (click)="sellProduct()"
+          [disabled]="product.stock <= 0">
+          Vente
+        </ion-button>
+
+        <ion-button
+          color="primary"
+          fill="outline"
+          expand="block"
+          (click)="increaseStock()">
+          Augmenter le stock
+        </ion-button>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- ===================== CARD 2: STATS VENTE ===================== -->
+  <ion-card class="product-card">
+    <ion-card-header>
+      <ion-card-title>Statistiques de vente</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <div class="info-row">
+        <span>Quantité vendue aujourd’hui</span>
+        <strong>{{ product.soldToday }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Quantité vendue ce mois</span>
+        <strong>{{ product.soldThisMonth }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Chiffre d’affaires (CA)</span>
+        <strong>{{ product.totalRevenue }} dh</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Bénéfice total</span>
+        <strong>{{ product.totalProfit }} dh</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Prix moyen de vente</span>
+        <strong>{{ product.averageSellPrice }} dh</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Dernière vente</span>
+        <strong>{{ product.lastSaleDate }}</strong>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

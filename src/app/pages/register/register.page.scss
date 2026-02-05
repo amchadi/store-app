@@ -1,0 +1,142 @@
+ion-content.register-content {
+  --background: #f6f8fb;
+}
+
+/* Brand */
+.brand {
+  margin-top: 36px;
+  text-align: center;
+
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    color: #0b1220;
+    margin: 12px 0 4px;
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin: 0;
+  }
+}
+
+.brand-badge {
+  width: 56px;
+  height: 56px;
+  margin: auto;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 22px;
+    color: #2563eb;
+  }
+}
+
+/* Card */
+.register-card {
+  margin-top: 22px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* Fields */
+.field {
+  margin-bottom: 14px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 900;
+  color: #0b1220;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Input Item */
+.input-item {
+  --background: #f7f8fb;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+
+  ion-icon {
+    color: #1e40af;
+    font-size: 18px;
+  }
+}
+
+ion-input {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+ion-input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.eye-btn ion-icon {
+  color: #64748b;
+}
+
+/* Errors */
+.has-error {
+  border: 1px solid rgba(220, 38, 38, 0.35);
+}
+
+.error {
+  margin: 8px 6px 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.hint {
+  margin: 8px 6px 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+}
+.error-hint {
+  color: #dc2626;
+}
+
+/* Buttons */
+.primary-btn {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  --border-radius: 14px;
+  --box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+}
+
+.secondary-btn {
+  font-weight: 900;
+  --border-radius: 14px;
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 16px 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: #94a3b8;
+}
+
+.bottom-hint {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}

@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ajouter un produit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding addp-content">
+
+  <!-- ===== CARD : Ajouter un produit ===== -->
+  <ion-card class="addp-card">
+    <ion-card-content>
+
+      <div class="addp-head">
+  
+        <div class="addp-subtitle">Renseigne les infos puis enregistre</div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <!-- Nom -->
+        <div class="addp-field">
+          <label class="addp-label">Nom du produit</label>
+          <ion-item lines="none" class="addp-item" [class.has-error]="isInvalid('name')">
+            <ion-input
+              formControlName="name"
+              placeholder="Ex: Coca Cola 1L">
+            </ion-input>
+          </ion-item>
+          <div class="addp-error" *ngIf="isInvalid('name')">Nom obligatoire.</div>
+        </div>
+
+        <!-- Stock -->
+        <div class="addp-field">
+          <label class="addp-label">Stock</label>
+          <ion-item lines="none" class="addp-item" [class.has-error]="isInvalid('stock')">
+            <ion-input type="number" formControlName="stock" placeholder="0"></ion-input>
+          </ion-item>
+          <div class="addp-error" *ngIf="isInvalid('stock')">Stock ≥ 0</div>
+        </div>
+
+        <!-- Prix row -->
+        <div class="addp-row">
+          <div class="addp-col">
+            <label class="addp-label">Achat (DH)</label>
+            <ion-item lines="none" class="addp-item" [class.has-error]="isInvalid('purchase_price')">
+              <ion-input type="number" formControlName="purchase_price" placeholder="0"></ion-input>
+            </ion-item>
+            <div class="addp-error" *ngIf="isInvalid('purchase_price')">≥ 0</div>
+          </div>
+
+          <div class="addp-col">
+            <label class="addp-label">Vente (DH)</label>
+            <ion-item lines="none" class="addp-item" [class.has-error]="isInvalid('sale_price')">
+              <ion-input type="number" formControlName="sale_price" placeholder="0"></ion-input>
+            </ion-item>
+            <div class="addp-error" *ngIf="isInvalid('sale_price')">≥ 0</div>
+          </div>
+        </div>
+
+        <!-- Marge -->
+        <div class="addp-hint" *ngIf="form.valid">
+          <span>Marge</span>
+          <strong>{{ margin }} dh</strong>
+        </div>
+
+        <!-- Actions -->
+        <div class="addp-actions">
+          <ion-button fill="outline" class="btn-cancel" type="button" (click)="back()">
+            Annuler
+          </ion-button>
+
+          <ion-button class="btn-primary" type="submit" [disabled]="loading || form.invalid">
+            <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
+            <span *ngIf="!loading">ENREGISTRER</span>
+          </ion-button>
+        </div>
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

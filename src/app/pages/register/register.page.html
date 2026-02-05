@@ -1,0 +1,114 @@
+
+<ion-content class="ion-padding register-content">
+
+  <!-- Brand -->
+  <div class="brand">
+    <div class="brand-badge">
+      <ion-icon [icon]="personAddOutline"></ion-icon>
+    </div>
+    <h1>Créer un compte</h1>
+    <p>Remplis les infos pour démarrer</p>
+  </div>
+
+  <ion-card class="register-card">
+    <ion-card-content>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <!-- Nom complet -->
+        <div class="field">
+          <label class="label">Nom complet</label>
+          <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('fullName')">
+            <ion-icon [icon]="personOutline" slot="start"></ion-icon>
+            <ion-input
+              formControlName="fullName"
+              placeholder="ex: Mohamed Adnane Abouchadi"
+              autocomplete="name">
+            </ion-input>
+          </ion-item>
+          <p class="error" *ngIf="showError('fullName')">Nom complet obligatoire.</p>
+        </div>
+
+        <!-- Nom de la boutique -->
+        <div class="field">
+          <label class="label">Nom de la boutique</label>
+          <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('shopName')">
+            <ion-icon [icon]="storefrontOutline" slot="start"></ion-icon>
+            <ion-input
+              formControlName="shopName"
+              placeholder="ex: Mini Market Adnane"
+              autocomplete="organization">
+            </ion-input>
+          </ion-item>
+          <p class="error" *ngIf="showError('shopName')">Nom de boutique obligatoire.</p>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label class="label">Email</label>
+          <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('email')">
+            <ion-icon [icon]="mailOutline" slot="start"></ion-icon>
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="ex: adnane@gmail.com"
+              autocomplete="email">
+            </ion-input>
+          </ion-item>
+          <p class="error" *ngIf="showError('email')">
+            Email obligatoire .
+          </p>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label class="label">Mot de passe</label>
+          <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('password')">
+            <ion-icon [icon]="keyOutline" slot="start"></ion-icon>
+
+            <ion-input
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="new-password">
+            </ion-input>
+
+            <ion-button
+              fill="clear"
+              slot="end"
+              class="eye-btn"
+              type="button"
+              (click)="showPassword = !showPassword">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <p class="hint" [class.error-hint]="showError('password')">
+            Minimum 6 caractères.
+          </p>
+        </div>
+
+        <ion-button
+          expand="block"
+          class="primary-btn"
+          type="submit"
+          [disabled]="loading"
+        >
+          <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
+          <span *ngIf="!loading">Créer mon compte</span>
+        </ion-button>
+
+        <div class="divider"><span>déjà un compte ?</span></div>
+
+        <ion-button expand="block" fill="outline" class="secondary-btn" type="button" (click)="goToLogin()">
+          Se connecter
+        </ion-button>
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+
+  <p class="bottom-hint">© 2026 · Gestion Stock</p>
+
+</ion-content>

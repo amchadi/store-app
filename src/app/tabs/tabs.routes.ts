@@ -3,34 +3,65 @@ import { TabsPage } from './tabs.page';
 
 export const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'products',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+          import('../pages/products/products.page').then(
+            (m) => m.ProductsPage
+          ),
       },
       {
-        path: 'tab2',
+        path: 'list-baskets',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../pages/list-baskets/list-baskets.page').then(m => m.ListBasketsPage),
       },
       {
-        path: 'tab3',
+        path: 'product/:id',
         loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../pages/product-detail/product-detail.page')
+            .then(m => m.ProductDetailPage),
+      },
+      {
+        path: 'add-product',
+        loadComponent: () => import('../pages/product-form/product-form.page').then(
+          (m) => m.ProductFormPage
+        )
+      },
+      {
+        path: 'basket',
+        loadComponent: () => import('../pages/basket/basket.page').then(
+          (m) => m.BasketPage
+        )
+      },
+      {
+        path: 'sales',
+        loadComponent: () =>
+          import('../pages/sales/sales.page').then(
+            (m) => m.SalesPage
+          ),
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('../pages/dashboard/dashboard.page').then(
+            (m) => m.DashboardPage
+          ),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('../pages/settings/settings.page').then(
+            (m) => m.SettingsPage
+          ),
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: 'products',
         pathMatch: 'full',
       },
     ],
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full',
   },
 ];

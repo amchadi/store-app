@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Vente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Produit -->
+  <ion-item>
+    <ion-label position="stacked">Produit</ion-label>
+    <ion-input placeholder="Ex: Coca 1L" [(ngModel)]="productName"></ion-input>
+  </ion-item>
+
+  <!-- Quantité -->
+  <ion-item>
+    <ion-label position="stacked">Quantité</ion-label>
+    <ion-input type="number" [(ngModel)]="qty"></ion-input>
+  </ion-item>
+
+  <!-- Prix unitaire -->
+  <ion-item>
+    <ion-label position="stacked">Prix unitaire (DH)</ion-label>
+    <ion-input type="number" placeholder="Ex: 8" [(ngModel)]="unitPrice"></ion-input>
+  </ion-item>
+
+  <!-- Date de vente -->
+  <ion-item>
+    <ion-label position="stacked">Date de vente</ion-label>
+    <ion-input type="date" [(ngModel)]="saleDate"></ion-input>
+  </ion-item>
+
+  <ion-card class="ion-margin-top">
+    <ion-card-header>
+      <ion-card-title>Total</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{ getTotal() }} DH</h2>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="success" class="ion-margin-top" (click)="confirmSale()">
+    Confirmer la vente
+  </ion-button>
+
+</ion-content>

@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Paramètres</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-list>
+
+  <ion-item class="settings-card-modern">
+    <div class="settings-content">
+      <div class="settings-text">
+        <h2>Nom de la boutique</h2>
+        <p>Paramètre général</p>
+      </div>
+      <span class="settings-value">My Shop</span>
+    </div>
+  </ion-item>
+
+  <ion-item class="settings-card-modern">
+    <div class="settings-content">
+      <div class="settings-text">
+        <h2>Devise</h2>
+        <p>Monnaie utilisée</p>
+      </div>
+      <span class="settings-value">MAD (DH)</span>
+    </div>
+  </ion-item>
+  <ion-item class="settings-card-modern">
+    <div class="settings-content qr-content">
+
+    <div class="settings-text">
+      <h2>Code QR</h2>
+      <p>Partager les informations de la boutique</p>
+    </div>
+    
+    <!-- QR -->
+    <span class="settings-value"> <ion-icon [icon]="qrCode" style="font-size: 36px;"></ion-icon></span>
+
+
+  </div>
+</ion-item>
+
+
+  <ion-item button class="settings-card-modern settings-logout" (click)="logout()">
+    <div class="settings-content">
+      <div class="settings-text">
+        <h2>Déconnexion</h2>
+        <p>Quitter la session</p>
+      </div>
+    </div>
+  </ion-item>
+
+</ion-list>
+
+</ion-content>

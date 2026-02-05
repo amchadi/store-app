@@ -1,0 +1,197 @@
+/* =========================
+   PAGE BACKGROUND
+========================= */
+ion-content {
+  --background: #f6f8fb;
+}
+
+/* =========================
+   HEADER
+========================= */
+ion-toolbar {
+  --background: #ffffff;
+  --border-color: #eef1f6;
+}
+
+ion-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+}
+/* =========================
+   HEADER BLACK
+========================= */
+ion-header,
+ion-toolbar {
+  --background: #000000;
+  --color: #ffffff;
+  --border-color: transparent;
+}
+
+/* Title */
+ion-title {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* Back button / icons */
+ion-back-button,
+ion-buttons ion-button,
+ion-toolbar ion-icon {
+  --color: #ffffff;
+}
+
+/* Remove shadow if any */
+ion-header::after {
+  display: none;
+}
+/* =========================
+   LIST
+========================= */
+ion-list {
+  background: transparent;
+  padding: 12px;
+}
+
+/* Remove default lines/styles of ion-item */
+ion-item {
+  --background: transparent;
+  --border-color: transparent;
+  --inner-border-width: 0;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin: 0 0 14px 0;
+}
+
+/* =========================
+   MODERN CARD ITEM
+========================= */
+.settings-card-modern {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #eef1f6;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* Make the whole item look like a card */
+.settings-card-modern::part(native) {
+  background: transparent;
+  padding: 14px 16px;
+}
+
+/* =========================
+   CONTENT LAYOUT
+========================= */
+.settings-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* =========================
+   TEXT
+========================= */
+.settings-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.settings-text h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.settings-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+/* =========================
+   VALUE (RIGHT SIDE)
+========================= */
+.settings-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+/* If value is long, cut it nicely */
+.settings-value {
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================
+   CLICK FEEDBACK
+========================= */
+ion-item[button] .settings-card-modern,
+.settings-card-modern:active {
+  transform: scale(0.995);
+}
+
+/* Safer active effect for the item itself */
+.settings-card-modern:active {
+  opacity: 0.95;
+}
+
+/* =========================
+   LOGOUT CARD
+========================= */
+.settings-logout {
+  border: 1px solid #fee2e2;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.08);
+}
+
+.settings-logout::part(native) {
+  padding: 14px 16px;
+}
+
+.settings-logout .settings-text h2 {
+  color: #b91c1c;
+  font-weight: 800;
+}
+
+.settings-logout .settings-text p {
+  color: #ef4444;
+}
+
+/* =========================
+   OPTIONAL: small divider inside card
+   (if you later add multiple lines)
+========================= */
+.settings-divider {
+  height: 1px;
+  background: #eef1f6;
+  margin: 10px 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 380px) {
+  .settings-text h2 {
+    font-size: 14px;
+  }
+
+  .settings-text p,
+  .settings-value {
+    font-size: 12px;
+  }
+
+  .settings-value {
+    max-width: 50%;
+  }
+}
