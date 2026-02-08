@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth.service';
 import { SupabaseService } from 'src/app/core/supabase.service';
 import { StoreService } from 'src/app/core/store.service';
+import { ProfileService } from 'src/app/core/profile.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -40,7 +41,7 @@ export class RegisterPage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private auth: AuthService,
-    private supabase:SupabaseService,
+    private profileService:ProfileService,
     private storeService:StoreService
   ) {}
 
@@ -53,7 +54,7 @@ export class RegisterPage implements OnInit {
     return this.isInvalid(controlName);
   }
 
-  async submit() {
+async submit() {
   this.submitted = true;
 
   if (this.form.invalid) {
@@ -62,35 +63,37 @@ export class RegisterPage implements OnInit {
   }
 
   this.loading = true;
-  const { email, password, shopName } = this.form.getRawValue();
+
+  const { email, password, shopName, fullName } = this.form.getRawValue();
 
   try {
-    // 1️⃣ Signup user
+    // 1️⃣ Créer le user (auth)
     const data = await this.auth.signUp(email!, password!);
     const userId = data.user?.id;
-    if (!userId) throw new Error('User non créé');
+    if (!userId) throw new Error('Utilisateur non créé');
 
-    // 2️⃣ Create store + link owner (⭐ via service)
+    // 2️⃣ Créer le profil (nom complet)
+    await this.profileService.createProfile(userId, fullName!);
+
+    // 3️⃣ Créer la boutique + lier le owner
     const store = await this.storeService.createStoreAsOwner(
       shopName!,
       userId
     );
 
-    // 3️⃣ Sauvegarder la boutique courante
+    // 4️⃣ Sauvegarder la boutique courante
     localStorage.setItem('currentStoreId', store.id);
 
-    // 4️⃣ Redirection
-  //  await this.toast('Compte créé avec succès ✅');
+    // 5️⃣ Redirection
     this.router.navigateByUrl('/tabs/dashboard', { replaceUrl: true });
 
   } catch (e: any) {
-    console.log("error",e);
-    
-  //  await this.toast(e?.message || 'Erreur lors de l’inscription');
+    console.error('Erreur signup', e);
   } finally {
     this.loading = false;
   }
 }
+
 
 
 

@@ -61,3 +61,19 @@
   </ion-card>
 
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button class="cart-fab" (click)="goToCart()">
+
+    <!-- WRAPPER -->
+    <div class="fab-icon-wrap">
+      <ion-icon name="cart-outline"></ion-icon>
+
+      <!-- BADGE -->
+      <span class="fab-badge" *ngIf="cartCount > 0">
+        {{ cartCount > 99 ? '99+' : cartCount }}
+      </span>
+    </div>
+
+  </ion-fab-button>
+</ion-fab>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({ providedIn: 'root' })
-export class ProductService {
+  export class ProductService {
   constructor(private supabase: SupabaseService) {}
 
   /**
@@ -13,16 +13,21 @@ async getProductsByCurrentStore() {
   if (!storeId) throw new Error('Aucune boutique sélectionnée');
 
   const { data, error } = await this.supabase
-    .supa()
-    .from('products')
-    .select(`
-      *,
-      basket_items (
-        id
+  .supa()
+  .from('products')
+  .select(`
+    *,
+    basket_items (
+      id,
+      baskets!inner (
+        id,
+        status
       )
-    `)
-    .eq('store_id', storeId)
-    .order('created_at', { ascending: false });
+    )
+  `)
+  .eq('store_id', storeId)
+  .eq('basket_items.baskets.status', 'draft')
+  .order('created_at', { ascending: false });
 
   if (error) throw error;
       

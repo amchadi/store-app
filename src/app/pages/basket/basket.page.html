@@ -1,24 +1,34 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Panier</ion-title>
+
+    <!-- ADD BUTTON -->
+    <ion-buttons class="btn-add" slot="end">
+      <ion-button (click)="openAddModal()">
+        <ion-icon slot="icon-only" [icon]="addCircleOutline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content class="ion-padding">
 
-  
+
 
   <!-- ===== CARD PRODUIT ===== -->
-  <ion-card class="cart-item"     *ngFor="let p of products">
-<
+  <ion-card class="cart-item" *ngFor="let p of products">
+
     <div class="item-header item-header-flex">
       <div>
         <h2 class="product-name">{{p.product.name}}</h2>
-        <p class="product-sub">Achat: {{p.product.purchase_price}} dh · Vente conseillée: {{p.product.sale_price}} dh</p>
+        <p class="product-sub">Achat: {{p.product.purchase_price}} dh · Vente conseillée: {{p.product.sale_price}} dh
+        </p>
       </div>
 
       <!-- DELETE BUTTON -->
-      <ion-button fill="clear" size="small" class="btn-delete" (click)="deleteItem()">
+      <ion-button fill="clear" size="small" class="btn-delete" (click)="deleteItem(p.id)">
         <ion-icon [icon]="trash" style="font-size: 26px;"></ion-icon>
       </ion-button>
     </div>
@@ -30,7 +40,7 @@
         <!-- Prix -->
         <ion-item lines="none" class="price-item half">
           <ion-input type="number" label="Prix" labelPlacement="stacked" [value]="p.price"
-            (ionInput)="onPriceChange($event)">
+            (ionInput)="onPriceChange(p,$event)">
           </ion-input>
         </ion-item>
 
@@ -52,9 +62,19 @@
     </ion-card-content>
 
     <div class="item-total">
-      <span>Total article</span>
-      <strong>{{ p.price*p.quantity }} dh</strong>
+      <div>
+        <span>Total article :</span>
+        <strong>{{ p.price * p.quantity }} dh</strong>
+      </div>
+
+      <div>
+        <span [style.color]="(p.price - p.product.purchase_price) * p.quantity >= 0 ? 'green' : 'red'">
+          Bénéfice :
+          {{ (p.price - p.product.purchase_price) * p.quantity }} dh
+        </span>
+      </div>
     </div>
+
 
   </ion-card>
   <!-- ===== CARD INFOS (50/50) ===== -->
@@ -101,32 +121,70 @@
     </ion-card-content>
   </ion-card>
   <!-- ===== DATE ACHAT ===== -->
-  <ion-item lines="none" class="date-row">
+  <ion-card class="cart-item">
+    <ion-item lines="none" class="date-row">
 
 
-    <ion-datetime-button datetime="achatDate"></ion-datetime-button>
+      <ion-datetime-button datetime="achatDate"></ion-datetime-button>
 
-    <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime id="achatDate" presentation="date" locale="fr-FR">
-        </ion-datetime>
-      </ng-template>
-    </ion-modal>
-  </ion-item>
-
+      <ion-modal [keepContentsMounted]="true" class="achat-modal">
+        <ng-template>
+          <ion-datetime id="achatDate" presentation="date-time" locale="fr-FR" hour-cycle="h23"   (ionChange)="onDateChange($event)">
+          </ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+  </ion-card>
 
   <!-- ===== RÉSUMÉ ===== -->
   <ion-card class="summary">
     <ion-card-content>
       <div class="summary-row">
         <span>Total</span>
-        <strong>{{ total }} dh</strong>
-      </div>
+        <strong>{{ calculateTotal() }} dh</strong>
 
-      <ion-button expand="block" class="btn-primary">
+      </div>
+      <div class="summary-row">
+        <span>Bénéfice global</span>
+        <strong [style.color]="calculateGlobalBenefit() >= 0 ? 'green' : 'red'">
+          {{ calculateGlobalBenefit() }} dh
+        </strong>
+      </div>
+      <ion-button expand="block" class="btn-primary" (click)="validateBasket()" [disabled]="isValidating">
+        <ion-spinner *ngIf="isValidating" name="crescent" style="margin-right:8px"></ion-spinner>
         Valider le panier
       </ion-button>
+
     </ion-card-content>
   </ion-card>
 
 </ion-content>
+<ion-modal [isOpen]="isAddModalOpen" (didDismiss)="isAddModalOpen = false" [initialBreakpoint]="0.6"
+  [breakpoints]="[0, 0.6, 0.9]">
+  <ng-template>
+
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Ajouter un produit</ion-title>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" (click)="closeAddModal()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-item button *ngFor="let prod of allProducts" (click)="addProductToCart(prod)">
+          <ion-label>
+            <h2>{{ prod.name }}</h2>
+            <p>Achat: {{ prod.purchase_price }} dh · Vente: {{ prod.sale_price }} dh</p>
+          </ion-label>
+          <ion-icon slot="end" name="add-outline"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+  </ng-template>
+</ion-modal>

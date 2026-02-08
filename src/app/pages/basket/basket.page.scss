@@ -1,6 +1,40 @@
 ion-content {
   --background: #f6f8fb;
 }
+ion-toolbar ion-icon,
+ion-buttons ion-button {
+  --color: #fff;
+}
+.achat-modal {
+  --width: 100%;
+  --max-width: 100%;
+  --height: auto;
+}
+
+.achat-modal ion-datetime {
+  width: 90%;
+  max-width: 90%;
+  background-color: #dbeafe;
+}
+
+ion-header::after {
+  display: none;
+}
+
+/* ===== ADD ICON BUTTON ===== */
+.btn-add {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  height: 40px;
+}
+
+.btn-add ion-icon {
+  font-size: 20px;
+}
+.achat-modal ion-datetime::part(header) {
+  width: 100%;
+}
+
 
 /* ===== MAIN CARD ===== */
 .cart-item {

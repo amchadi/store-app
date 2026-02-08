@@ -1,10 +1,10 @@
 export interface Product {
   id: string;
+  store_id: string;
   name: string;
-  sku?: string;
-  buyPrice: number;
-  sellPrice: number;
-  stockQty: number;
-  minStock?: number;
-  createdAt: string;
+  stock: number;
+  purchase_price: number;
+  inBasket:boolean;
+  sale_price: number;
+  created_at: string;
 }

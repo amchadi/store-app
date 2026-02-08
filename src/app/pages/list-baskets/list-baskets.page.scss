@@ -1,113 +1,81 @@
 ion-content {
   --background: #f6f8fb;
 }
-
-/* ===== HEADER BLACK ===== */
-ion-header,
-ion-toolbar {
-  --background: #000;
-  --border-color: transparent;
-}
-
-ion-title {
-  font-size: 15px;
-  font-weight: 800;
-  color: #fff;
-}
-
-ion-toolbar ion-icon,
-ion-buttons ion-button {
-  --color: #fff;
-}
-
-ion-header::after {
-  display: none;
-}
-
-/* ===== ADD ICON BUTTON ===== */
-.btn-add {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  height: 40px;
-}
-
-.btn-add ion-icon {
-  font-size: 20px;
-}
-
-/* ===== EMPTY CARD ===== */
-.empty-card {
-  background: #ffffff;
+.sale-card {
+  margin: 12px 0;
   border-radius: 18px;
-  border: 1px solid #eef1f6;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.06);
 }
 
-.empty-card h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.empty-card p {
-  margin: 6px 0 14px;
-  font-size: 13px;
-  color: #64748b;
-}
-
-/* ===== PRIMARY BUTTON ===== */
-.btn-primary {
-  height: 48px;
-  font-size: 15px;
-  font-weight: 800;
-  --border-radius: 16px;
-  --box-shadow: none;
-  --background: #2563eb;
-}
-
-/* ===== BASKET CARD ===== */
-.basket-card {
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #eef1f6;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
-  margin-bottom: 14px;
-}
-
-.basket-content {
+.sale-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  padding: 14px 16px;
 }
 
-.basket-text h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 800;
+.sale-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sale-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
   color: #0f172a;
 }
 
-.basket-text p {
-  margin: 4px 0 0;
+.sale-line.sub {
   font-size: 13px;
   color: #64748b;
 }
 
-.basket-right {
+/* Base icon */
+.sale-icon {
+  font-size: 16px;
+}
+
+/* 📦 Produits */
+.icon-products {
+  color: #2563eb; // bleu
+}
+
+/* 🕒 Date / heure */
+.icon-time {
+  color: #7c3aed; // violet
+}
+
+/* 👤 Vendu par */
+.icon-user {
+  color: #16a34a; // vert
+}
+
+/* ➜ Navigation */
+.icon-nav {
+  color: #94a3b8; // gris
+}
+
+/* 💰 Total */
+.sale-total {
+  font-size: 17px;
+  font-weight: 900;
+  color: green;
+}
+
+
+.sale-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.basket-total {
-  font-size: 14px;
-  font-weight: 900;
-  color: #2563eb;
-}
 
-.chev {
-  font-size: 18px;
+
+.sale-chevron {
+  font-size: 20px;
   color: #94a3b8;
 }

@@ -16,15 +16,18 @@ import {
   IonBadge,
   IonSearchbar,
   IonCard,
+  IonFab,
   IonSpinner,
+  IonFabButton,
   IonCardContent
 } from '@ionic/angular/standalone';
 import {
-  addCircle
+  addCircle,cartOutline
 } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { ProductService } from 'src/app/core/product.service';
 import { BasketService } from 'src/app/core/basket.service';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   standalone: true,
@@ -35,6 +38,7 @@ import { BasketService } from 'src/app/core/basket.service';
     IonContent,
     IonHeader,
     IonSpinner,
+    IonFab,
     IonTitle,
     CommonModule,
     IonCardContent,
@@ -47,26 +51,31 @@ import { BasketService } from 'src/app/core/basket.service';
     IonBadge,
     IonSearchbar,
     IonButtons,
-    IonIcon
+    IonIcon,
+    IonFabButton
   ],
 })
 export class ProductsPage implements OnInit {
   add = addCircle;
-  products: any[] = [];
+  cartOutline=cartOutline;
+  products: Product[] = [];
   loading = false;
   searchValue: string = '';
   searchTimer: any;
   constructor(private productService: ProductService, private router: Router,private basketService: BasketService) { }
 
   async ngOnInit() {
-    await this.loadProducts();
+ 
   }
+  ionViewWillEnter() {
+  this.loadProducts();
+}
 
   async loadProducts() {
     this.loading = true;
     try {
       const  data  = await this.productService.getProductsByCurrentStore() ;
-      console.log('data',data);
+
       
       this.products = data || [];
     } catch (e) {
@@ -98,6 +107,13 @@ export class ProductsPage implements OnInit {
   addToCart(product: any) {
     this.basketService.addProduct(product,1);
     product.inBasket = true;
+  }
+  get cartCount(){
+    return this.products.filter(p=> p.inBasket).length
+    }
+
+  goToCart(){
+    this.router.navigate(['/tabs/basket'])
   }
 
 }

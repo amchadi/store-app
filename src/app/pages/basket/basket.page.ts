@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent,IonDatetimeButton,IonDatetime, IonModal,IonButton, IonIcon, IonItem, IonInput,IonLabel,IonSelect,IonSelectOption } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonButtons, IonCardContent, IonDatetimeButton, IonDatetime, IonModal, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSelect, IonSelectOption, IonList,IonSpinner } from '@ionic/angular/standalone';
 import {
-  trashSharp, chevronUpCircle, chevronDownCircle, cashOutline, trendingUp,
+  trashSharp, chevronUpCircle, chevronDownCircle, cashOutline, trendingUp, addCircleOutline
 } from 'ionicons/icons';
 import { BasketService } from 'src/app/core/basket.service';
-type Product = {
-  id: string;
-  name: string;
-  buyPrice: number;
-  suggestedSellPrice: number;
-};
+import { AlertController, LoadingController } from '@ionic/angular';
+import { BasketItem, BasketItemWithProduct } from 'src/app/models/basket-item.model';
+import { ProductService } from 'src/app/core/product.service';
+import { Product } from 'src/app/models/product.model';
+import { Router } from '@angular/router';
+
 
 type CartItem = {
   product: Product;
@@ -25,7 +25,7 @@ type CartItem = {
   templateUrl: './basket.page.html',
   styleUrls: ['./basket.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonSelectOption,CommonModule,IonDatetimeButton,IonModal,IonDatetime, FormsModule, IonCard, IonCardContent, IonButton, IonIcon, IonInput, IonItem,IonLabel,IonSelect ]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonSelectOption, IonButtons, CommonModule, IonList, IonDatetimeButton, IonModal, IonDatetime, FormsModule, IonCard, IonCardContent, IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSelect,IonSpinner]
 })
 export class BasketPage implements OnInit {
   cash = cashOutline;
@@ -33,111 +33,182 @@ export class BasketPage implements OnInit {
   up = chevronUpCircle;
   down = chevronDownCircle;
   trash = trashSharp;
-
+  addCircleOutline = addCircleOutline;
   // data
-  products: any[] = [];
+  products: BasketItemWithProduct[] = [];
 
   selectedProductId: string | null = null;
 
   cartItems: CartItem[] = [];
 
- dateSelle: string = new Date().toISOString();;
-  price: number = 0;
-quantity: number = 1;
-total: number = 0;
+  dateSelle: string = new Date().toISOString();;
+  validatedAtISO: string  = '';
+isValidating = false;
 
-/**
- * Déclenchée lors du changement du prix dans le champ input.
- * Met à jour le prix et recalcule automatiquement le total.
- */
-onPriceChange(event: any) {
-  // Récupération de la valeur saisie depuis ion-input
-  const value = event?.detail?.value;
+  @ViewChild(IonModal) modal!: IonModal;
 
-  // Conversion en nombre (0 si vide ou invalide)
-  const newPrice = value !== null && value !== '' ? Number(value) : 0;
+  allProducts: Product[] = [];
 
-  // Sécurité : éviter NaN
-  this.price = isNaN(newPrice) ? 0 : newPrice;
+  isAddModalOpen = false;
 
-  // Recalcul du total = prix × quantité
-  this.total = Number((this.price * this.quantity).toFixed(2));
-}
-
-  // ===== Select handlers =====
-  onProductSelected(ev: any) {
-    this.selectedProductId = ev?.detail?.value ?? null;
+  openAddModal() {
+    this.isAddModalOpen = true;
   }
 
-  addSelectedProduct() {
-    if (!this.selectedProductId) return;
+  closeAddModal() {
+    this.isAddModalOpen = false;
+  }
+  async addProductToCart(prod: Product) {
 
-    const p = this.products.find(x => x.id === this.selectedProductId);
-    if (!p) return;
+    const loading = await this.loadingCtrl.create({
+      message: 'Ajout en cours...',
+      spinner: 'crescent'
+    });
 
-    // إذا بغيتي نفس المنتج مايتزادش بزاف (غير يزيد qty):
-    const existingIndex = this.cartItems.findIndex(ci => ci.product.id === p.id);
-    if (existingIndex !== -1) {
-      this.cartItems[existingIndex].quantity += 1;
-      this.recalcItem(existingIndex);
+    this.closeAddModal();
+    await loading.present();
+    await this.basketService.addProduct(prod, 1);
+    const product = await this.basketService.getOneProductByBasket(prod) as unknown as BasketItemWithProduct;
+    this.products.push(product);
+    await loading.dismiss();
+  }
+
+  /**
+ * Récupère et sécurise la date/heure sélectionnée
+ * ion-datetime peut retourner string | string[] | null
+ */
+onDateChange(event: any) {
+  const value = event?.detail?.value;
+
+  if (typeof value === 'string') {
+    this.validatedAtISO = value;
+  } else {
+    this.validatedAtISO = '';
+  }
+}
+
+
+  /**
+   * Déclenchée lors du changement du prix dans le champ input.
+   * Met à jour le prix et recalcule automatiquement le total.
+   */
+ async onPriceChange(product: any, event: any) {
+    // Récupération de la valeur saisie depuis ion-input
+    const value = event?.detail?.value;
+
+    // Conversion en nombre (0 si vide ou invalide)
+    const newPrice = value !== null && value !== '' ? Number(value) : 0;
+
+    // Sécurité : éviter NaN
+    product.price = isNaN(newPrice) ? 0 : newPrice;
+
+    await this.basketService.updateItem(product)
+
+  }
+
+
+
+
+
+
+
+ async increaseQty(product: BasketItem) {
+    product.quantity++;
+    await this.basketService.updateItem(product)
+  }
+  
+ async decreaseQty(product: BasketItem) {
+    product.quantity--;
+    await this.basketService.updateItem(product)
+  }
+
+
+
+  constructor(private basketService: BasketService, private alertCtrl: AlertController, private productService: ProductService, private loadingCtrl: LoadingController,private router: Router) { }
+
+  async ngOnInit() {
+    this.products = await this.basketService.getBasketItems() as unknown as BasketItemWithProduct[];
+    this.allProducts = await this.productService.getProductsByCurrentStore();
+
+  }
+  private calculateBy(
+    selector: (p: any) => number
+  ): number {
+    return this.products.reduce(
+      (total, p) => total + selector(p) * p.quantity,
+      0
+    );
+  }
+  async deleteItem(basketItemId: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmation',
+      message: 'Êtes-vous sûr de vouloir supprimer ce produit du panier ?',
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel'
+        },
+        {
+          text: 'Supprimer',
+          role: 'destructive',
+          handler: async () => {
+            await this.basketService.deleteBasketItemById(basketItemId);
+            const index = this.products.findIndex(p => p.id === basketItemId);
+            this.products.splice(index, 1);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  calculateSalesCapital(): number {
+    return this.calculateBy(p => p.product.sale_price);
+  }
+
+  calculatePurchaseCapital(): number {
+    return this.calculateBy(p => p.product.purchase_price);
+  }
+
+  calculateTotal(): number {
+    return this.calculateBy(p => p.price);
+  }
+  calculateGlobalBenefit(): number {
+  return this.calculateTotal() - this.calculatePurchaseCapital();
+}
+  /**
+   * Validation du panier :
+   * - Vérifications
+   * - Mise à jour du statut en "validated"
+   * - Enregistrement de validated_at
+   */
+  async validateBasket() {
+    if (this.isValidating) return;
+
+    if (!this.products.length) {
+      console.warn('Panier vide');
       return;
     }
 
-    // add new item
-    const item: CartItem = {
-      product: p,
-      price: p.suggestedSellPrice, // default price
-      quantity: 1,
-      total: p.suggestedSellPrice,
-    };
+    if (!this.validatedAtISO) {
+      console.warn('Date/heure de vente obligatoire');
+      return;
+    }
 
-    this.cartItems.unshift(item);
-  }
+    this.isValidating = true;
 
-  // ===== Cart handlers =====
-  onItemPriceChange(index: number, ev: any) {
-    const val = Number(ev?.detail?.value ?? 0);
-    this.cartItems[index].price = isNaN(val) ? 0 : val;
-    this.recalcItem(index);
-  }
+    try {
+      await this.basketService.validateBasket(
+  //      this.validatedAtISO
+      );
 
-  increaseQty(product: any) {
-    product.quantity++;
-  }
-
-  decreaseQty(product: any) {
-    product.quantity--;
-  }
-
-  private recalcItem(index: number) {
-    const it = this.cartItems[index];
-    it.total = Number((it.price * it.quantity).toFixed(2));
-  }
-  deleteItem(){}
-
-  constructor(private basketService: BasketService) { }
-
- async ngOnInit() {
-    this.products = await this.basketService.getBasketItems() as any
-    
-    
-  }
-calculateSalesCapital():number{
-   let total = 0;
-    this.products.map(p=> {
-      total = total + p.product.sale_price * p.quantity
-    })
-
-    return total;
-  }
-
-calculatePurchaseCapital():number{
-  let total = 0;
-    this.products.map(p=> {
-      total = total + p.product.purchase_price * p.quantity
-    })
-
-    return total;
+      // 
+      this.router.navigate(['/tabs/list-baskets'])
+    } catch (error) {
+      console.error('Erreur lors de la validation du panier', error);
+    } finally {
+      this.isValidating = false;
+    }
   }
 
 }
