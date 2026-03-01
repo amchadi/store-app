@@ -30,10 +30,10 @@
         </div>
 
         <!-- Stock -->
-        <div class="addp-field">
+        <div class="addp-field" *ngIf="!isEditMode">
           <label class="addp-label">Stock</label>
           <ion-item lines="none" class="addp-item" [class.has-error]="isInvalid('stock')">
-            <ion-input type="number" formControlName="stock" placeholder="0"></ion-input>
+            <ion-input type="number" formControlName="stock" min="0" placeholder="0" ></ion-input>
           </ion-item>
           <div class="addp-error" *ngIf="isInvalid('stock')">Stock ≥ 0</div>
         </div>

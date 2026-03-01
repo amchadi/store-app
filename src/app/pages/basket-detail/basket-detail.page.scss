@@ -1,0 +1,246 @@
+/* ===== BACKGROUND ===== */
+.detail-bg {
+  --background: #f6f8fb;
+}
+
+/* ===== COMMON CARDS ===== */
+.info-card,
+.item-card,
+.summary-card,
+.empty-card {
+  margin: 12px 0;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.06);
+}
+
+/* ===== LOADING ===== */
+.loading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ===== INFO HEADER ===== */
+.info-content {
+  padding: 14px 16px;
+}
+
+.info-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ===== STATUS BADGE ===== */
+.status-badge {
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== MINI STATS ===== */
+.mini-stats {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.mini {
+  flex: 1;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.mini-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 800;
+}
+
+.mini-value {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+/* ===== ITEM ===== */
+.item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.item-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.item-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.10);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.item-sub {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.item-bottom {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.line-total,
+.line-benefit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== SUMMARY ===== */
+.sum-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.sum-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-weight: 800;
+}
+
+.sum-row strong {
+  font-weight: 900;
+}
+
+/* ===== EMPTY ===== */
+.empty-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #64748b;
+}
+
+.empty-row ion-icon {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.empty-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.empty-sub {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #64748b;
+}
+
+/* ===== ICON STYLE (GLOBAL) ===== */
+ion-icon {
+  font-size: 14px;
+  color: #94a3b8;
+}
+/* ===== ICON COLORS (WITH CLASSES) ===== */
+
+.ic-date {
+  color: #6366f1; // indigo
+}
+
+.ic-user {
+  color: #16a34a; // green
+}
+
+.ic-products {
+  color: #2563eb; // blue
+}
+
+.ic-cash {
+  color: #16a34a; // green
+}
+
+.ic-product {
+  color: #2563eb;
+}
+
+.ic-qty {
+  color: #2563eb;
+}
+
+.ic-total {
+  color: #6366f1;
+}
+
+.ic-benefit-pos {
+  color: #16a34a;
+}
+
+.ic-benefit-neg {
+  color: #dc2626;
+}
+
+.ic-wallet {
+  color: #2563eb;
+}
+
+.ic-stats {
+  color: #16a34a;
+}
+
+/* Empty / warning */
+.ic-warning {
+  color: #f59e0b;
+}

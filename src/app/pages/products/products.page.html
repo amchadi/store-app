@@ -12,6 +12,7 @@
   <ion-toolbar>
     <ion-searchbar
       placeholder="Rechercher un produit"
+      debounce="400"
       (ionInput)="onSearch($event)">
     </ion-searchbar>
   </ion-toolbar>
@@ -25,19 +26,19 @@
   </div>
 
   <!-- Empty -->
-  <p *ngIf="!loading && products.length === 0" style="color:#64748b; font-weight:700;">
+  <p *ngIf="!loading && filteredProducts.length === 0" style="color:#64748b; font-weight:700;">
     Aucun produit trouvé.
   </p>
 
   <!-- ===== PRODUCT CARD ===== -->
   <ion-card
     class="product-card-modern"
-    *ngFor="let p of products"
+    *ngFor="let p of filteredProducts"
    
   >
-    <ion-card-content class="product-content">
+    <ion-card-content  class="product-content">
 
-      <div class="product-text"  (click)="goToProductDettail()">
+      <div class="product-text"  (click)="goToProductDettail(p)" >
         <h2>{{ p.name }}</h2>
         <p>
           Stock {{ p.stock }}

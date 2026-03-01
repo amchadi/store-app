@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormsModule, Validators,ReactiveFormsModule} from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,
-  IonIcon,IonButton,IonSpinner,IonItem,IonLabel,IonCard, IonButtons,IonCardContent,IonInput} from '@ionic/angular/standalone';
+import { FormBuilder, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  IonContent, IonHeader, IonTitle, IonToolbar,
+  IonIcon, IonButton, IonSpinner, IonItem, IonLabel, IonCard, IonButtons, IonCardContent, IonInput
+} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import {
- personOutline ,mailOutline,keyOutline,lockClosed
+  personOutline, mailOutline, keyOutline, lockClosed,eyeOffOutline,eyeOutline
 } from 'ionicons/icons';
 import { AuthService } from 'src/app/core/auth.service';
 import { SupabaseService } from 'src/app/core/supabase.service';
@@ -14,14 +16,16 @@ import { SupabaseService } from 'src/app/core/supabase.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule,IonButtons,
-     FormsModule,IonIcon,IonButton,IonSpinner,IonItem,IonInput,IonLabel,ReactiveFormsModule,IonCard,IonCardContent]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonButtons,
+    FormsModule, IonIcon, IonButton, IonSpinner, IonItem, IonInput, IonLabel, ReactiveFormsModule, IonCard, IonCardContent]
 })
 export class LoginPage implements OnInit {
   persone = personOutline;
-  keyOutline=keyOutline;
-  mailOutline=mailOutline; 
-  lockClosed=lockClosed; 
+  keyOutline = keyOutline;
+  mailOutline = mailOutline;
+  lockClosed = lockClosed;
+  eyeOffOutline = eyeOffOutline;
+  eyeOutline = eyeOutline;
   loading = false;
   showPassword = false;
   submitted = false;
@@ -37,7 +41,7 @@ export class LoginPage implements OnInit {
     private supabase: SupabaseService,
     private router: Router,
     // private toastCtrl: ToastController
-  ) {}
+  ) { }
 
   isInvalid(name: string) {
     const c = this.form.get(name);
@@ -76,8 +80,8 @@ export class LoginPage implements OnInit {
 
       // 4) Choose first store (for now)
       const firstStore = data[0].stores as any;
-      if(firstStore)
-      localStorage.setItem('currentStoreId', firstStore.id);
+      if (firstStore)
+        localStorage.setItem('currentStoreId', firstStore.id);
 
       // 5) Go dashboard
       this.router.navigateByUrl('/tabs/dashboard', { replaceUrl: true });
@@ -98,8 +102,8 @@ export class LoginPage implements OnInit {
   }
 
   private async toast(message: string) {
- //   const t = await this.toastCtrl.create({ message, duration: 2200, position: 'top' });
-   // await t.present();
+    //   const t = await this.toastCtrl.create({ message, duration: 2200, position: 'top' });
+    // await t.present();
   }
 
   ngOnInit() {

@@ -19,6 +19,10 @@ export const routes: Routes = [
           import('../pages/list-baskets/list-baskets.page').then(m => m.ListBasketsPage),
       },
       {
+        path:'basket-detail/:id',
+        loadComponent:() => import('../pages/basket-detail/basket-detail.page').then(m=>m.BasketDetailPage),
+      },
+      {
         path: 'product/:id',
         loadComponent: () =>
           import('../pages/product-detail/product-detail.page')
@@ -26,6 +30,12 @@ export const routes: Routes = [
       },
       {
         path: 'add-product',
+        loadComponent: () => import('../pages/product-form/product-form.page').then(
+          (m) => m.ProductFormPage
+        )
+      },
+       {
+        path: 'edit-product/:id',
         loadComponent: () => import('../pages/product-form/product-form.page').then(
           (m) => m.ProductFormPage
         )

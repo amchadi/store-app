@@ -43,10 +43,10 @@ export class BasketService {
         if (error) throw error;
         return data as Basket;
     }
-    async updateItem(product:BasketItem) {
+    async updateItem(product: BasketItem) {
         if (product.quantity < 0) product.quantity = 0;
 
-        // إذا quantity = 0 ➜ نحيد item
+
         if (product.quantity === 0) {
             const { error } = await this.supabase
                 .supa()
@@ -62,7 +62,7 @@ export class BasketService {
             .supa()
             .from('basket_items')
             .update({
-                quantity:product.quantity,
+                quantity: product.quantity,
                 price: product.price
             })
             .eq('id', product.id);
@@ -72,7 +72,7 @@ export class BasketService {
 
 
     /** Ajouter produit au panier */
-    async addProduct(product: any, quantity: number) {
+    async addProduct(product: Product, quantity: number) {
         const basket = await this.getOrCreateBasket();
 
         const { data: existing } = await this.supabase
@@ -99,6 +99,7 @@ export class BasketService {
                 product_id: product.id,
                 quantity: 1,
                 price: product.sale_price,
+                purchase_price:product.purchase_price
             });
     }
 
@@ -150,7 +151,7 @@ export class BasketService {
         price,
         product:products (*)
       `)
-            // Filtre par produit
+            // Filtre par produit<
             .eq('product_id', product.id)
             // Filtre par panier
             .eq('basket_id', basket.id)
@@ -167,20 +168,32 @@ export class BasketService {
         return data as unknown as BasketItemWithProduct;
     }
 
-    /**
-  * Valide le panier :
-  * - Change le statut de draft → validated
-  * - Enregistre la date/heure de vente (validated_at)
-  */
-    async validateBasket() {
-        const basket = await this.getOrCreateBasket();
+   /**
+ * Valide le panier via RPC (transaction):
+ * - Vérifie stock
+ * - Décrémente stock
+ * - Valide le panier (validated_at)
+ */
+async validateBasket(dateValidate: string) {
+  const userId = (await this.supabase.supa().auth.getUser()).data.user?.id;
+  if (!userId) throw new Error('Not authenticated');
 
-        const { error } = await this.supabase
-            .supa()
-            .rpc('validate_basket', { p_basket_id: basket.id });
+  const basket = await this.getOrCreateBasket();
 
-        if (error) throw error;
-    }
+  const { data, error } = await this.supabase
+    .supa()
+    .rpc('validate_basket_and_decrement_stock', {
+      p_basket_id: basket.id,
+      p_validated_at: dateValidate, // ISO string OK
+    });
+
+  if (error) throw error;
+
+  // data = row de baskets (updated)
+  return data;
+}
+
+
     /**
     * Récupère les paniers validés (ventes)
     * pour le store courant 
@@ -196,6 +209,7 @@ export class BasketService {
             .select(`
         id,
     validated_at,
+    status,
     user_id,
     seller:profiles (
       full_name
@@ -207,7 +221,7 @@ export class BasketService {
     )
       `)
             .eq('store_id', storeId)
-            .eq('status', 'validated')
+            .in('status', ['validated', 'cancelled'])
             .order('validated_at', { ascending: false });
 
 
@@ -217,4 +231,33 @@ export class BasketService {
 
         return data ?? [];
     }
+
+    /**
+ * Annule le panier courant :
+ * - Récupère le panier draft
+ * - Met à jour le statut du panier à "cancelled"
+ * - Redirige vers la page produits
+ */
+    async cancelCurrentBasket(): Promise<void> {
+        try {
+            // 1️⃣ Récupérer le panier draft courant (ou le créer s’il n’existe pas)
+            const basket = await this.getOrCreateBasket();
+
+            if (!basket) return;
+
+            // 2️⃣ Mettre à jour le statut du panier à "cancelled"
+            await this.supabase
+                .supa()
+                .from('baskets')
+                .update({ status: 'cancelled' })
+                .eq('id', basket.id);
+
+            return;
+
+        } catch (error) {
+            console.error('Erreur lors de l’annulation du panier', error);
+            throw error;
+        }
+    }
+
 }

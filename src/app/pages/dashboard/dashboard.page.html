@@ -14,13 +14,27 @@
     </ion-card-header>
 
     <ion-card-content>
-
+      <div class="row-line">
+        <div class="row-left">
+          <ion-icon [icon]="archiveOutline"></ion-icon>
+          <span>Produits en stock</span>
+        </div>
+        <strong>{{ totalProductsInStock }}</strong>
+      </div>
+      <div class="row-line">
+  
+        <div class="row-left">
+    <ion-icon [icon]="walletOutline"></ion-icon>
+    <span>Capital total</span>
+  </div>
+  <strong>{{totalCapital | number:'1.2-2'}} dh</strong>
+</div>
       <div class="row-line">
         <div class="row-left">
           <ion-icon [icon]="todayIcon"></ion-icon>
           <span>Chiffre d’affaires aujourd’hui</span>
         </div>
-        <strong>{{ todayTotal }} dh</strong>
+        <strong>{{ todayTotal | number:'1.2-2' }} dh</strong>
       </div>
 
       <div class="row-line">
@@ -28,7 +42,7 @@
           <ion-icon [icon]="calendarIcon"></ion-icon>
           <span>Total du mois en cours</span>
         </div>
-        <strong>{{ currentMonthTotal }} dh</strong>
+        <strong>{{ currentMonthTotal | number:'1.2-2' }} dh</strong>
       </div>
 
       <div class="row-line">
@@ -36,7 +50,7 @@
           <ion-icon [icon]="trendingUpOutline"></ion-icon>
           <span>Moyenne par jour</span>
         </div>
-        <strong>{{ currentMonthAvg }} dh</strong>
+        <strong>{{ currentMonthAvg | number:'1.2-2' }} dh</strong>
       </div>
 
     </ion-card-content>
@@ -45,7 +59,7 @@
   <!-- ===== CARTES PAR MOIS ===== -->
   <ion-card class="dash-card" *ngFor="let m of months">
     <ion-card-header>
-      <ion-card-title>{{ m.label }} {{ year }}</ion-card-title>
+      <ion-card-title>{{ m.label }}  {{ m.year }}</ion-card-title>
       <ion-card-subtitle>Statistiques mensuelles</ion-card-subtitle>
     </ion-card-header>
 
@@ -56,17 +70,17 @@
           <ion-icon [icon]="cash"></ion-icon>
           <span>Total du mois</span>
         </div>
-        <strong>{{ m.total }} dh</strong>
+        <strong>{{ m.total | number:'1.2-2' }} dh</strong>
       </div>
 
-  
+
 
       <div class="row-line">
         <div class="row-left">
           <ion-icon name="stats-chart-outline"></ion-icon>
           <span>Moyenne par jour</span>
         </div>
-        <strong>{{ m.avgPerDay }} dh</strong>
+        <strong>{{ m.avgPerDay | number:'1.2-2' }} dh</strong>
       </div>
 
     </ion-card-content>

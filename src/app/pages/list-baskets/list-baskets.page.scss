@@ -1,6 +1,7 @@
 ion-content {
   --background: #f6f8fb;
 }
+
 .sale-card {
   margin: 12px 0;
   border-radius: 18px;
@@ -61,11 +62,11 @@ ion-content {
 
 /* 💰 Total */
 .sale-total {
-  font-size: 17px;
+  white-space: nowrap;
+  font-size: 15px;
   font-weight: 900;
   color: green;
 }
-
 
 .sale-right {
   display: flex;
@@ -73,9 +74,62 @@ ion-content {
   gap: 10px;
 }
 
-
-
 .sale-chevron {
   font-size: 20px;
   color: #94a3b8;
+}
+
+/* =========================
+   ✅ ADDITIONS
+========================= */
+
+/* Separator by date (خفيف ومرتب) */
+.date-separator {
+  margin: 16px 4px 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(148, 163, 184, 0.35);
+}
+
+.date-total {
+  font-size: 12px;
+  font-weight: 900;
+  color: #0f172a;
+  white-space: nowrap;
+}
+/* Colonne في right باش badge يجي تحت total */
+.sale-right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Badge */
+.sale-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* Colors */
+.badge-validated {
+  background: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+}
+
+.badge-cancelled {
+  background: rgba(195, 99, 88, 0.14);
+  color: red;
 }

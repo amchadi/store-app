@@ -24,12 +24,38 @@ export class ListBasketsPage implements OnInit {
   sales: any[] = [];
   isLoading = false;
 
-  constructor(private basketService: BasketService) {}
+  constructor(private basketService: BasketService, private router: Router) {}
 
   async ngOnInit() {
     await this.loadSales();
   }
+  async ionViewWillEnter(){
+     await this.loadSales();
+   }
+   // Calcule le total des ventes pour un jour donné
+getDayTotal(date: string): number {
 
+  const targetDate = new Date(date);
+
+  return this.sales
+    .filter(s => {
+      const d = new Date(s.validated_at);
+
+      return (
+        d.getFullYear() === targetDate.getFullYear() &&
+        d.getMonth() === targetDate.getMonth() &&
+        d.getDate() === targetDate.getDate() &&
+        s.status === 'validated' // نحسب غير validated
+      );
+    })
+    .reduce((sum, s) => {
+       const v = this.calculateBasketTotal(s.basket_items);
+
+      const num = typeof v === 'number' ? v : Number(String(v).replace(',', '.'));
+
+      return sum + (isNaN(num) ? 0 : num);
+    }, 0);
+}
   /**
    * Chargement des ventes (paniers validés)
    */
@@ -69,9 +95,10 @@ getProductLabel(qty: number): string {
   calculateBasketTotal(items: any[]): number {
     if (!items?.length) return 0;
 
-    return items.reduce((sum, item) => {
+     const total = items.reduce((sum, item) => {
       return sum + (item.price * item.quantity);
     }, 0);
+    return total.toFixed(2)
   }
 
  /**
@@ -88,8 +115,36 @@ formatDateTimeShort(value: string | null): string {
   const hh = String(d.getHours()).padStart(2, '0');
   const min = String(d.getMinutes()).padStart(2, '0');
 
-  return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+  return `${hh}:${min}`;
+}
+/**
+ * Vérifie si deux dates sont dans des jours différents
+ */
+isNewDay(current: string, previous: string): boolean {
+  if (!previous) return true;
+
+  const d1 = new Date(current);
+  const d2 = new Date(previous);
+
+  return (
+    d1.getFullYear() !== d2.getFullYear() ||
+    d1.getMonth() !== d2.getMonth() ||
+    d1.getDate() !== d2.getDate()
+  );
 }
 
-
+/**
+ * Format date  (ex: 12 février 2026)
+ */
+formatDateOnly(date: string): string {
+  return new Date(date).toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+openSaleDetail(basketId: string) {
+  this.router.navigate(['/tabs/basket-detail', basketId]);
+}
 }

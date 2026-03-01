@@ -1,0 +1,144 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Détail du panier</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding detail-bg">
+
+  <!-- Loading -->
+  <ion-card class="info-card" *ngIf="isLoading">
+    <ion-card-content class="loading-row">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Chargement...</span>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Infos panier -->
+  <ion-card class="info-card" *ngIf="!isLoading && basket">
+    <ion-card-content class="info-content">
+
+      <div class="info-top">
+        <div class="info-left">
+
+          <div class="info-sub">
+            <ion-icon [icon]="calendarOutline" class="ic-date"></ion-icon>
+            <span>{{ formatDateTimeShort(basket.validated_at || basket.cancelled_at || basket.created_at) }}</span>
+          </div>
+
+          <div class="info-sub">
+            <ion-icon [icon]="personOutline" class="ic-user"></ion-icon>
+            <span>{{ basket.seller?.full_name || '—' }}</span>
+          </div>
+
+        </div>
+
+        <ion-badge [color]="getStatusColor()" class="status-badge">
+          <ion-icon
+            [icon]="basket.status === 'validated' ? checkmarkCircleOutline : closeCircleOutline">
+          </ion-icon>
+          {{ getStatusLabel() }}
+        </ion-badge>
+      </div>
+
+      <!-- Mini stats -->
+      <div class="mini-stats">
+        <div class="mini">
+          <div class="mini-label">
+            <ion-icon [icon]="cubeOutline" class="ic-products"></ion-icon>
+            Produits
+          </div>
+          <div class="mini-value">{{ totalQty() }}</div>
+        </div>
+
+        <div class="mini">
+          <div class="mini-label">
+            <ion-icon [icon]="cashOutline" class="ic-cash"></ion-icon>
+            Total
+          </div>
+          <div class="mini-value">{{ basketTotal() }} dh</div>
+        </div>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Items -->
+  <ion-card class="item-card" *ngFor="let it of items">
+    <ion-card-content>
+
+      <div class="item-head">
+        <div class="item-name">
+          <ion-icon [icon]="pricetagOutline" class="ic-product"></ion-icon>
+          {{ it.product?.name || '—' }}
+        </div>
+
+        <div class="item-qty">
+          <ion-icon [icon]="layersOutline" class="ic-qty"></ion-icon>
+          x{{ it.quantity }}
+        </div>
+      </div>
+
+      <div class="item-sub">
+        <ion-icon name="cart-outline"></ion-icon>
+        Achat: {{ it.product?.purchase_price }} dh ·
+        <ion-icon [icon]="cashOutline" class="ic-total"></ion-icon>
+        Prix: {{ it.price }} dh ·
+
+      </div>
+
+      <div class="item-bottom">
+        <div class="line-total">
+          <ion-icon [icon]="calculatorOutline" class="ic-benefit-pos"></ion-icon>
+          Total: <strong>{{ lineTotal(it) }} dh</strong>
+        </div>
+
+        <div class="line-benefit" [style.color]="lineBenefit(it) >= 0 ? 'green' : 'red'">
+          <ion-icon
+            class="ic-benefit-neg"
+            [icon]="lineBenefit(it) >= 0 ? trendingUpOutline : trendingDownOutline">
+          </ion-icon>
+          Bénéfice: <strong>{{ lineBenefit(it) }} dh</strong>
+        </div>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Summary -->
+  <ion-card class="summary-card" *ngIf="!isLoading && basket">
+    <ion-card-content>
+
+      <div class="sum-row">
+        <span class="sum-label">
+          <ion-icon [icon]="walletOutline" class="ic-wallet"></ion-icon>
+          Total panier
+        </span>
+        <strong>{{ basketTotal() }} dh</strong>
+      </div>
+
+      <div class="sum-row">
+        <span class="sum-label">
+          <ion-icon name="stats-chart-outline" class="ic-stats"></ion-icon>
+          Bénéfice global
+        </span>
+        <strong [style.color]="globalBenefit() >= 0 ? 'green' : 'red'">
+          {{ globalBenefit() }} dh
+        </strong>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Empty items -->
+  <ion-card class="empty-card" *ngIf="!isLoading && basket && items.length === 0">
+    <ion-card-content class="empty-row">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <div>
+        <div class="empty-title">Aucun produit</div>
+        <div class="empty-sub">Ce panier ne contient aucun article.</div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -18,8 +18,9 @@ import {      IonContent,
   IonIcon,
   IonInput
 } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/core/product.service';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-product-form',
@@ -46,7 +47,8 @@ import { ProductService } from 'src/app/core/product.service';
 })
 export class ProductFormPage implements OnInit {
   submitted = false;
-
+  isEditMode = false;
+  private productId:string =''
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     stock: [0, [Validators.required, Validators.min(0)]],
@@ -58,13 +60,28 @@ export class ProductFormPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private activatedRoute:ActivatedRoute
   ) {}
 
   get margin(): number {
     const buy = Number(this.form.get('purchase_price')?.value || 0);
     const sell = Number(this.form.get('sale_price')?.value || 0);
     return +(sell - buy).toFixed(2);
+  }
+
+ async ionViewWillEnter(){
+    const id = this.activatedRoute.snapshot.params['id'];
+    if(id){
+      this.isEditMode = true;
+      const product = await this.productService.getProductById(id) as Product;
+      this.form.get("name")?.setValue(product.name);
+      this.form.get("stock")?.setValue(product.stock);
+      this.form.get("purchase_price")?.setValue(product.purchase_price);
+      this.form.get("sale_price")?.setValue(product.sale_price);
+      this.productId = id;
+    }
+    
   }
 
   isInvalid(name: string) {
@@ -86,7 +103,8 @@ export class ProductFormPage implements OnInit {
     }
 
     this.loading = true;
-    try {
+    if(!this.isEditMode){
+        try {
       const v = this.form.getRawValue();
 
       await this.productService.createProduct({
@@ -105,6 +123,26 @@ export class ProductFormPage implements OnInit {
     } finally {
       this.loading = false;
     }
+
+    }else{
+          try {
+      const v = this.form.getRawValue();
+
+      await this.productService.updateProduct(this.productId,v.name!,v.purchase_price!,v.sale_price!)
+
+
+      await this.toast('Produit ajouté ✅');
+      this.router.navigateByUrl('/tabs/products', { replaceUrl: true });
+
+    } catch (e: any) {
+      console.error(e);
+      await this.toast(e?.message || 'Erreur ajout produit');
+    } finally {
+      this.loading = false;
+    }
+    }
+
+  
   }
 
   private async toast(message: string) {

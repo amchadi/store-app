@@ -6,39 +6,62 @@
 
 <ion-content class="ion-padding sales-bg">
 
-<ion-card class="sale-card" *ngFor="let s of sales">
-  <div class="sale-row">
+  <ng-container *ngFor="let s of sales; let i = index">
 
-    <!-- LEFT -->
-    <div class="sale-left">
-      <div class="sale-line">
-        <ion-icon name="cube-outline" class="sale-icon icon-products"></ion-icon>
-        <strong>{{ calculateTotalQuantity(s.basket_items) }} produits</strong>
-      </div>
-
-      <div class="sale-line sub">
-        <ion-icon [icon]="timeOutline" class="sale-icon icon-time"></ion-icon>
-        <span>{{ formatDateTimeShort(s.validated_at) }}</span>
-      </div>
-
-      <div class="sale-line sub">
-        <ion-icon [icon]="personOutline" class="sale-icon icon-user"></ion-icon>
-        <span>Vendu par {{ s.seller?.full_name || '—' }}</span>
-      </div>
-    </div>
-
-    <!-- RIGHT -->
-    <div class="sale-right">
-      <span class="sale-total">
-        {{ calculateBasketTotal(s.basket_items) }} dh
+    <!-- ===== DATE SEPARATOR ===== -->
+    <div class="date-separator" *ngIf="i === 0 || isNewDay(s.validated_at, sales[i - 1]?.validated_at)">
+      <span class="date-text">
+        {{ formatDateOnly(s.validated_at) }}
       </span>
-      <ion-icon [icon]="chevronForwardOutline" class="sale-chevron icon-nav"></ion-icon>
-    </div>
 
+      <span class="date-line"></span>
+
+      <span class="date-total">
+        {{ getDayTotal(s.validated_at)  | number:'1.2-2' }} dh
+      </span>
   </div>
-</ion-card>
 
+    <ion-card class="sale-card" (click)="openSaleDetail(s.id)">
+      <div class="sale-row">
 
+        <!-- LEFT -->
+        <div class="sale-left">
+          <div class="sale-line">
+            <ion-icon name="cube-outline" class="sale-icon icon-products"></ion-icon>
+            <strong>{{ calculateTotalQuantity(s.basket_items) }} produits</strong>
+          </div>
+
+          <div class="sale-line sub">
+            <ion-icon [icon]="timeOutline" class="sale-icon icon-time"></ion-icon>
+            <span>{{ formatDateTimeShort(s.validated_at) }}</span>
+          </div>
+
+          <div class="sale-line sub">
+            <ion-icon [icon]="personOutline" class="sale-icon icon-user"></ion-icon>
+            <span>Vendu par {{ s.seller?.full_name || '—' }}</span>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="sale-right">
+          <div class="sale-right-col">
+            <span class="sale-total">
+              {{ calculateBasketTotal(s.basket_items) }} dh
+            </span>
+
+            <!-- BADGE تحت total -->
+            <ion-badge class="sale-badge" [ngClass]="s.status === 'validated' ? 'badge-validated' : 'badge-cancelled'">
+              {{ s.status === 'validated' ? 'Validé' : 'Annulé' }}
+            </ion-badge>
+          </div>
+
+          <ion-icon [icon]="chevronForwardOutline" class="sale-chevron icon-nav"></ion-icon>
+        </div>
+
+      </div>
+    </ion-card>
+
+  </ng-container>
 
   <!-- Empty state -->
   <ion-card class="settings-card" *ngIf="!isLoading && sales.length === 0">

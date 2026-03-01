@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonButtons, IonCardContent, IonDatetimeButton, IonDatetime, IonModal, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSelect, IonSelectOption, IonList,IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonButtons, IonCardContent, IonDatetimeButton, IonDatetime, IonModal, IonButton, IonIcon, IonItem, IonInput, IonLabel, IonSelect, IonSelectOption, IonList, IonSpinner } from '@ionic/angular/standalone';
 import {
-  trashSharp, chevronUpCircle, chevronDownCircle, cashOutline, trendingUp, addCircleOutline
+  trashSharp, chevronUpCircle, chevronDownCircle, cashOutline, trendingUp, addCircleOutline, closeOutline, addOutline
 } from 'ionicons/icons';
 import { BasketService } from 'src/app/core/basket.service';
 import { AlertController, LoadingController } from '@ionic/angular';
@@ -25,7 +25,7 @@ type CartItem = {
   templateUrl: './basket.page.html',
   styleUrls: ['./basket.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonSelectOption, IonButtons, CommonModule, IonList, IonDatetimeButton, IonModal, IonDatetime, FormsModule, IonCard, IonCardContent, IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSelect,IonSpinner]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonSelectOption, IonButtons, CommonModule, IonList, IonDatetimeButton, IonModal, IonDatetime, FormsModule, IonCard, IonCardContent, IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSelect, IonSpinner]
 })
 export class BasketPage implements OnInit {
   cash = cashOutline;
@@ -34,6 +34,8 @@ export class BasketPage implements OnInit {
   down = chevronDownCircle;
   trash = trashSharp;
   addCircleOutline = addCircleOutline;
+  addOutline = addOutline;
+  closeOutline = closeOutline;
   // data
   products: BasketItemWithProduct[] = [];
 
@@ -42,8 +44,8 @@ export class BasketPage implements OnInit {
   cartItems: CartItem[] = [];
 
   dateSelle: string = new Date().toISOString();;
-  validatedAtISO: string  = '';
-isValidating = false;
+  validatedAtISO: string = new Date().toISOString();
+  isValidating = false;
 
   @ViewChild(IonModal) modal!: IonModal;
 
@@ -66,6 +68,7 @@ isValidating = false;
     });
 
     this.closeAddModal();
+    prod.inBasket = true;
     await loading.present();
     await this.basketService.addProduct(prod, 1);
     const product = await this.basketService.getOneProductByBasket(prod) as unknown as BasketItemWithProduct;
@@ -77,22 +80,22 @@ isValidating = false;
  * Récupère et sécurise la date/heure sélectionnée
  * ion-datetime peut retourner string | string[] | null
  */
-onDateChange(event: any) {
-  const value = event?.detail?.value;
+  onDateChange(event: any) {
+    const value = event?.detail?.value;
 
-  if (typeof value === 'string') {
-    this.validatedAtISO = value;
-  } else {
-    this.validatedAtISO = '';
+    if (typeof value === 'string') {
+      this.validatedAtISO = value;
+    } else {
+      this.validatedAtISO = '';
+    }
   }
-}
 
 
   /**
    * Déclenchée lors du changement du prix dans le champ input.
    * Met à jour le prix et recalcule automatiquement le total.
    */
- async onPriceChange(product: any, event: any) {
+  async onPriceChange(product: any, event: any) {
     // Récupération de la valeur saisie depuis ion-input
     const value = event?.detail?.value;
 
@@ -106,30 +109,39 @@ onDateChange(event: any) {
 
   }
 
+  getProductsOutOfCurrentBasket(): Product[] {
+    return this.allProducts.filter(p => !p.inBasket);
+  }
 
 
 
 
 
-
- async increaseQty(product: BasketItem) {
+  async increaseQty(product: BasketItem) {
     product.quantity++;
     await this.basketService.updateItem(product)
   }
-  
- async decreaseQty(product: BasketItem) {
+
+  async decreaseQty(product: BasketItem) {
     product.quantity--;
     await this.basketService.updateItem(product)
   }
 
 
 
-  constructor(private basketService: BasketService, private alertCtrl: AlertController, private productService: ProductService, private loadingCtrl: LoadingController,private router: Router) { }
+  constructor(
+    private basketService: BasketService, 
+    private alertCtrl: AlertController,
+    private productService: ProductService,
+    private loadingCtrl: LoadingController, private router: Router) { }
 
   async ngOnInit() {
-    this.products = await this.basketService.getBasketItems() as unknown as BasketItemWithProduct[];
+  
     this.allProducts = await this.productService.getProductsByCurrentStore();
 
+  }
+  async ionViewWillEnter() {
+      this.products = await this.basketService.getBasketItems() as unknown as BasketItemWithProduct[];
   }
   private calculateBy(
     selector: (p: any) => number
@@ -154,7 +166,14 @@ onDateChange(event: any) {
           handler: async () => {
             await this.basketService.deleteBasketItemById(basketItemId);
             const index = this.products.findIndex(p => p.id === basketItemId);
+            const productId = this.products[index].product.id;
+            const indexProduct = this.allProducts.findIndex(product => product.id === productId);
+
+            console.log("indexProduct", indexProduct, productId);
+
+            this.allProducts[indexProduct].inBasket = false;
             this.products.splice(index, 1);
+
           }
         }
       ]
@@ -174,8 +193,8 @@ onDateChange(event: any) {
     return this.calculateBy(p => p.price);
   }
   calculateGlobalBenefit(): number {
-  return this.calculateTotal() - this.calculatePurchaseCapital();
-}
+    return this.calculateTotal() - this.calculatePurchaseCapital();
+  }
   /**
    * Validation du panier :
    * - Vérifications
@@ -199,7 +218,7 @@ onDateChange(event: any) {
 
     try {
       await this.basketService.validateBasket(
-  //      this.validatedAtISO
+              this.validatedAtISO
       );
 
       // 
@@ -210,5 +229,29 @@ onDateChange(event: any) {
       this.isValidating = false;
     }
   }
+async cancelBasket() {
+  const alert = await this.alertCtrl.create({
+    header: 'Annuler le panier',
+    message: 'Êtes-vous sûr de vouloir annuler ce panier ? Tous les produits seront supprimés.',
+    buttons: [
+      {
+        text: 'Non',
+        role: 'cancel'
+      },
+      {
+        text: 'Oui, annuler',
+        role: 'destructive',
+        handler: async () => {
+          await this.basketService.cancelCurrentBasket();
+          this.router.navigate(['/tabs/list-baskets'])
+          
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 
 }

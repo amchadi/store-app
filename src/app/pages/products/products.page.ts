@@ -59,9 +59,10 @@ export class ProductsPage implements OnInit {
   add = addCircle;
   cartOutline=cartOutline;
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   loading = false;
   searchValue: string = '';
-  searchTimer: any;
+  searchTerm: string ='';
   constructor(private productService: ProductService, private router: Router,private basketService: BasketService) { }
 
   async ngOnInit() {
@@ -78,30 +79,37 @@ export class ProductsPage implements OnInit {
 
       
       this.products = data || [];
+      this.filteredProducts = data;
     } catch (e) {
       console.error(e);
     } finally {
       this.loading = false;
     }
   }
-  onSearch(ev: any) {
-    const value = (ev?.detail?.value || '').toString();
-    this.searchValue = value;
+ /* ===============================
+   Fonction de recherche produit
+================================= */
+onSearch(event: any) {
+  this.searchTerm = event.target.value?.toLowerCase() || '';
 
-    // debounce بسيط
-    clearTimeout(this.searchTimer);
-    this.searchTimer = setTimeout(() => {
-      this.loadProducts();
-    }, 250);
+  if (!this.searchTerm) {
+    this.filteredProducts = this.products;
+    return;
   }
+
+  this.filteredProducts = this.products.filter(p =>
+    p.name.toLowerCase().includes(this.searchTerm) 
+  );
+}
 
 
   addProduct() {
     this.router.navigateByUrl('/tabs/add-product');
 
   }
-  goToProductDettail() {
-    this.router.navigateByUrl('/tabs/product/5');
+  goToProductDettail(product:Product) {
+    const url = `/tabs/product/${product.id}`
+     this.router.navigateByUrl(url);
 
   }
   addToCart(product: any) {

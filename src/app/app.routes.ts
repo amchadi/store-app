@@ -26,5 +26,9 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'tabs',
   },
+  {
+    path: 'basket-detail',
+    loadComponent: () => import('./pages/basket-detail/basket-detail.page').then( m => m.BasketDetailPage)
+  },
 
 ]
