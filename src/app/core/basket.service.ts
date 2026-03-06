@@ -249,7 +249,7 @@ async validateBasket(dateValidate: string) {
             await this.supabase
                 .supa()
                 .from('baskets')
-                .update({ status: 'cancelled' })
+                .update({ status: 'cancelled', validated_at: new Date() })
                 .eq('id', basket.id);
 
             return;

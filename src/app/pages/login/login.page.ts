@@ -11,6 +11,7 @@ import {
 } from 'ionicons/icons';
 import { AuthService } from 'src/app/core/auth.service';
 import { SupabaseService } from 'src/app/core/supabase.service';
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -40,7 +41,7 @@ export class LoginPage implements OnInit {
     private auth: AuthService,
     private supabase: SupabaseService,
     private router: Router,
-    // private toastCtrl: ToastController
+    private toastCtrl: ToastController
   ) { }
 
   isInvalid(name: string) {
@@ -87,11 +88,27 @@ export class LoginPage implements OnInit {
       this.router.navigateByUrl('/tabs/dashboard', { replaceUrl: true });
 
     } catch (e: any) {
-      await this.toast(e?.message || 'Erreur de connexion');
+      await this.showLoginError(e)
     } finally {
       this.loading = false;
     }
   }
+ private async  showLoginError(error: any) {
+
+  const msg =
+    error?.message?.toLowerCase().includes('invalid login credentials')
+      ? 'Email ou mot de passe incorrect.'
+      : 'Une erreur est survenue lors de la connexion. Veuillez réessayer.';
+
+  const toast = await this.toastCtrl.create({
+    message: msg,
+    duration: 2500,
+    position: 'top',
+    color: 'danger',
+  });
+
+  await toast.present();
+}
 
   async forgotPassword() {
     await this.toast('Reset password: à ajouter (si بغيتي نديرها لك).');

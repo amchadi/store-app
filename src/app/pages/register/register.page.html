@@ -1,4 +1,3 @@
-
 <ion-content class="ion-padding register-content">
 
   <!-- Brand -->
@@ -20,10 +19,7 @@
           <label class="label">Nom complet</label>
           <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('fullName')">
             <ion-icon [icon]="personOutline" slot="start"></ion-icon>
-            <ion-input
-              formControlName="fullName"
-              placeholder="ex: Mohamed Adnane Abouchadi"
-              autocomplete="name">
+            <ion-input formControlName="fullName" placeholder="ex: Mohamed Adnane Abouchadi" autocomplete="name">
             </ion-input>
           </ion-item>
           <p class="error" *ngIf="showError('fullName')">Nom complet obligatoire.</p>
@@ -34,10 +30,7 @@
           <label class="label">Nom de la boutique</label>
           <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('shopName')">
             <ion-icon [icon]="storefrontOutline" slot="start"></ion-icon>
-            <ion-input
-              formControlName="shopName"
-              placeholder="ex: Mini Market Adnane"
-              autocomplete="organization">
+            <ion-input formControlName="shopName" placeholder="ex: Mini Market Adnane" autocomplete="organization">
             </ion-input>
           </ion-item>
           <p class="error" *ngIf="showError('shopName')">Nom de boutique obligatoire.</p>
@@ -48,11 +41,7 @@
           <label class="label">Email</label>
           <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('email')">
             <ion-icon [icon]="mailOutline" slot="start"></ion-icon>
-            <ion-input
-              type="email"
-              formControlName="email"
-              placeholder="ex: adnane@gmail.com"
-              autocomplete="email">
+            <ion-input type="email" formControlName="email" placeholder="ex: adnane@gmail.com" autocomplete="email">
             </ion-input>
           </ion-item>
           <p class="error" *ngIf="showError('email')">
@@ -66,19 +55,11 @@
           <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('password')">
             <ion-icon [icon]="keyOutline" slot="start"></ion-icon>
 
-            <ion-input
-              [type]="showPassword ? 'text' : 'password'"
-              formControlName="password"
-              placeholder="••••••••"
+            <ion-input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••"
               autocomplete="new-password">
             </ion-input>
 
-            <ion-button
-              fill="clear"
-              slot="end"
-              class="eye-btn"
-              type="button"
-              (click)="showPassword = !showPassword">
+            <ion-button fill="clear" slot="end" class="eye-btn" type="button" (click)="showPassword = !showPassword">
               <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
             </ion-button>
           </ion-item>
@@ -87,13 +68,29 @@
             Minimum 6 caractères.
           </p>
         </div>
+        <!-- Confirmation du mot de passe -->
+        <div class="field">
+          <label class="label">Confirmer le mot de passe</label>
 
-        <ion-button
-          expand="block"
-          class="primary-btn"
-          type="submit"
-          [disabled]="loading"
-        >
+          <ion-item lines="none" class="input-item" [class.has-error]="isInvalid('confirmPassword')">
+            <ion-icon [icon]="keyOutline" slot="start"></ion-icon>
+
+            <ion-input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+              placeholder="••••••••" autocomplete="new-password">
+            </ion-input>
+
+            <ion-button fill="clear" slot="end" class="eye-btn" type="button"
+              (click)="showConfirmPassword = !showConfirmPassword">
+              <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <p class="error" *ngIf="showError('confirmPassword')">
+            Les mots de passe ne correspondent pas.
+          </p>
+        </div>
+
+        <ion-button expand="block" class="primary-btn" type="submit" [disabled]="loading">
           <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
           <span *ngIf="!loading">Créer mon compte</span>
         </ion-button>

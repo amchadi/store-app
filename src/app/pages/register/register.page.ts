@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/core/auth.service';
 import { SupabaseService } from 'src/app/core/supabase.service';
 import { StoreService } from 'src/app/core/store.service';
 import { ProfileService } from 'src/app/core/profile.service';
+import { passwordMatchValidator } from './Validator';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -27,6 +28,7 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
   showPassword = false;
+  showConfirmPassword = false;
   loading = false;
   submitted = false;
 
@@ -35,7 +37,12 @@ export class RegisterPage implements OnInit {
     shopName: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-  });
+    confirmPassword: ['', Validators.required],
+  },
+  {
+    validators: passwordMatchValidator
+  }
+);
 
   constructor(
     private fb: FormBuilder,
@@ -61,6 +68,7 @@ async submit() {
     this.form.markAllAsTouched();
     return;
   }
+
 
   this.loading = true;
 

@@ -129,7 +129,7 @@
 
       <ion-modal [keepContentsMounted]="true" class="achat-modal">
         <ng-template>
-          <ion-datetime id="achatDate" presentation="date-time" locale="fr-FR" hour-cycle="h23"   (ionChange)="onDateChange($event)">
+          <ion-datetime  [value]="validatedAtISO" id="achatDate" presentation="date-time" locale="fr-FR" hour-cycle="h23"   (ionChange)="onDateChange($event)">
           </ion-datetime>
         </ng-template>
       </ion-modal>

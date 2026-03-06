@@ -142,6 +142,7 @@ export class BasketPage implements OnInit {
   }
   async ionViewWillEnter() {
       this.products = await this.basketService.getBasketItems() as unknown as BasketItemWithProduct[];
+      this.validatedAtISO = this.dateSelle = new Date().toISOString()
   }
   private calculateBy(
     selector: (p: any) => number
@@ -168,9 +169,6 @@ export class BasketPage implements OnInit {
             const index = this.products.findIndex(p => p.id === basketItemId);
             const productId = this.products[index].product.id;
             const indexProduct = this.allProducts.findIndex(product => product.id === productId);
-
-            console.log("indexProduct", indexProduct, productId);
-
             this.allProducts[indexProduct].inBasket = false;
             this.products.splice(index, 1);
 
